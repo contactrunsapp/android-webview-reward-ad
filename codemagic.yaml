@@ -1,10 +1,6 @@
 workflows:
   android-webview-build:
     name: Android WebView Build
-    environment:
-      flutter: false
-      android:
-        gradle_options: "--no-daemon"
     scripts:
       - name: Clean project
         script: ./gradlew clean
@@ -12,7 +8,3 @@ workflows:
         script: ./gradlew assembleRelease
     artifacts:
       - app/build/outputs/apk/release/app-release.apk
-    publishing:
-      email:
-        recipients:
-          - contactrunsapp@gmail.com  # Replace with your email if you want build notifications
