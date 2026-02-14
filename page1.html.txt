@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Run Shookup - Find Love</title>
+  <style>
+    /* ROOT VARIABLES */
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --card: #f8f9fa;
+      --border: #e9ecef;
+      --primary: #ff385c;
+    }
+    
+    body.dark {
+      --bg: #1a1a1a;
+      --text: #ffffff;
+      --card: #2d2d2d;
+      --border: #404040;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: 0.3s;
+    }
+    
+    /* HEADER */
+    .header {
+      background: var(--card);
+      padding: 15px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    /* FILTERS */
+    .filters-section {
+      padding: 15px;
+    }
+    
+    .filter-bar {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    
+    .filter-group {
+      margin-bottom: 10px;
+    }
+    
+    .filter-group label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .filter-group select, .filter-group input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+    }
+    
+    /* POSTS GRID */
+    .posts-container {
+      padding: 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    
+    .profile-card {
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    
+    .profile-photo {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    
+    .profile-info {
+      padding: 10px;
+    }
+    
+    .profile-name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .profile-location {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .profile-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #ff385c20;
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 10px;
+      margin-right: 3px;
+    }
+    
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .join-modal {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .close-modal {
+      float: right;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: var(--text);
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+    }
+    
+    .location-row {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .location-row select {
+      flex: 1;
+    }
+    
+    .photo-upload-area {
+      border: 2px dashed var(--primary);
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .photo-preview {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    
+    .photo-preview img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--card);
+      margin-top: 20px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+<div class='header'>
+  <div class='header-inner'>
+    <span class='logo'>❤️ Run Shookup</span>
+    <button class='btn' onclick='openJoinModal()'>Join</button>
+  </div>
+</div>
+
+<div class='filters-section'>
+  <div class='filter-bar'>
+    <div class='filter-group'>
+      <label>Country</label>
+      <select id='countryFilter' onchange='filterPosts()'>
+        <option value=''>All</option>
+      </select>
+    </div>
+    <div class='filter-group'>
+      <label>Search</label>
+      <input type='text' id='searchFilter' placeholder='Search...' onkeyup='filterPosts()'>
+    </div>
+  </div>
+</div>
+
+<div class='posts-container' id='postsContainer'>
+  <div class='loading'>Loading...</div>
+</div>
+
+<div class='footer'>
+  <p>© 2025 Run Shookup</p>
+</div>
+
+<!-- JOIN MODAL -->
+<div class='modal-overlay' id='joinModal'>
+  <div class='join-modal'>
+    <button class='close-modal' onclick='closeJoinModal()'>&times;</button>
+    
+    <h2>Create Profile</h2>
+    
+    <div class='form-group'>
+      <label>Nickname</label>
+      <input type='text' id='nickname' placeholder='Your name'>
+    </div>
+    
+    <div class='form-group'>
+      <label>Age</label>
+      <select id='age'>
+        <option>18-24</option>
+        <option>25-30</option>
+        <option>31-35</option>
+        <option>36-40</option>
+        <option>41+</option>
+      </select>
+    </div>
+    
+    <div class='form-group'>
+      <label>Gender</label>
+      <select id='gender'>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </div>
+    
+    <div class='form-group'>
+      <label>Location</label>
+      <div class='location-row'>
+        <select id='joinCountry'>
+          <option>USA</option>
+          <option>UK</option>
+          <option>Canada</option>
+        </select>
+        <input type='text' id='joinCity' placeholder='City'>
+      </div>
+    </div>
+    
+    <div class='form-group'>
+      <label>About</label>
+      <textarea id='bio' rows='3' placeholder='Tell about yourself...'></textarea>
+    </div>
+    
+    <div class='form-group'>
+      <label>Photos</label>
+      <div class='photo-upload-area' onclick='document.getElementById("photoInput").click()'>
+        📸 Tap to select photos
+      </div>
+      <input type='file' id='photoInput' multiple accept='image/*' style='display:none' onchange='previewPhotos()'>
+      <div class='photo-preview' id='photoPreview'></div>
+    </div>
+    
+    <button class='submit-btn' onclick='submitProfile()'>Create Profile</button>
+  </div>
+</div>
+
+<script>
+let profiles = [];
+let selectedPhotos = [];
+
+function openJoinModal() {
+  document.getElementById('joinModal').classList.add('active');
+}
+
+function closeJoinModal() {
+  document.getElementById('joinModal').classList.remove('active');
+}
+
+function previewPhotos() {
+  const files = document.getElementById('photoInput').files;
+  const preview = document.getElementById('photoPreview');
+  preview.innerHTML = '';
+  selectedPhotos = [];
+  
+  for(let i = 0; i < files.length; i++) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedPhotos.push(e.target.result);
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(files[i]);
+  }
+}
+
+function loadProfiles() {
+  const saved = localStorage.getItem('runshookup-profiles');
+  if(saved) {
+    profiles = JSON.parse(saved);
+  } else {
+    profiles = [
+      {
+        nickname: 'Sarah',
+        age: '25-30',
+        gender: 'Female',
+        country: 'USA',
+        city: 'New York',
+        bio: 'Love hiking',
+        photos: ['https://images.unsplash.com/photo-1494790108777-283128473ab8?w=400']
+      },
+      {
+        nickname: 'Mike',
+        age: '31-35',
+        gender: 'Male',
+        country: 'UK',
+        city: 'London',
+        bio: 'Food lover',
+        photos: ['https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400']
+      }
+    ];
+    localStorage.setItem('runshookup-profiles', JSON.stringify(profiles));
+  }
+  displayProfiles();
+}
+
+function displayProfiles() {
+  const container = document.getElementById('postsContainer');
+  let html = '';
+  
+  profiles.forEach(p => {
+    html += `
+      <div class='profile-card'>
+        <img class='profile-photo' src='${p.photos[0]}' onerror="this.src='https://via.placeholder.com/150/ff385c/fff?text=${p.nickname}'">
+        <div class='profile-info'>
+          <div class='profile-name'>${p.nickname}, ${p.age}</div>
+          <div class='profile-location'>📍 ${p.city}</div>
+          <div>
+            <span class='profile-badge'>${p.country}</span>
+            <span class='profile-badge'>${p.gender}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function filterPosts() {
+  const search = document.getElementById('searchFilter').value.toLowerCase();
+  const country = document.getElementById('countryFilter').value;
+  
+  const cards = document.querySelectorAll('.profile-card');
+  cards.forEach(card => {
+    const name = card.querySelector('.profile-name').textContent.toLowerCase();
+    const location = card.querySelector('.profile-location').textContent.toLowerCase();
+    let show = true;
+    
+    if(search && !name.includes(search) && !location.includes(search)) show = false;
+    if(country && !location.includes(country.toLowerCase())) show = false;
+    
+    card.style.display = show ? 'block' : 'none';
+  });
+}
+
+function submitProfile() {
+  const nickname = document.getElementById('nickname').value;
+  const age = document.getElementById('age').value;
+  const gender = document.getElementById('gender').value;
+  const country = document.getElementById('joinCountry').value;
+  const city = document.getElementById('joinCity').value;
+  const bio = document.getElementById('bio').value;
+  
+  if(!nickname || !city || selectedPhotos.length === 0) {
+    alert('Please fill required fields and add a photo');
+    return;
+  }
+  
+  const newProfile = {
+    nickname,
+    age,
+    gender,
+    country,
+    city,
+    bio,
+    photos: selectedPhotos
+  };
+  
+  profiles.push(newProfile);
+  localStorage.setItem('runshookup-profiles', JSON.stringify(profiles));
+  
+  closeJoinModal();
+  displayProfiles();
+  alert('Profile created!');
+}
+
+// Populate country filter
+const countries = ['USA', 'UK', 'Canada', 'Australia', 'India'];
+const countryFilter = document.getElementById('countryFilter');
+countries.forEach(c => {
+  const option = document.createElement('option');
+  option.value = c;
+  option.textContent = c;
+  countryFilter.appendChild(option);
+});
+
+// Initialize
+loadProfiles();
+
+// Close modal when tapping outside
+window.addEventListener('click', (e) => {
+  if(e.target.classList.contains('modal-overlay')) {
+    closeJoinModal();
+  }
+});
+</script>
+
+</body>
+</html>
