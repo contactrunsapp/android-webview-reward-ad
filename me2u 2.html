@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>RUNS · luxury connection</title>
+  <!-- Font Awesome 6 (free) for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* iOS inspired, luxury pink/rose gold palette */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #fff9fc;  /* soft pink background */
+      font-family: -apple-system, 'Helvetica Neue', 'SF Pro Text', sans-serif;
+      color: #1e1e1e;
+      padding-bottom: 30px;
+    }
+
+    /* header — RUNS with chic accent */
+    .header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(224, 170, 180, 0.3);
+      padding: 18px 20px 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: 0 4px 20px rgba(200, 120, 140, 0.15);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 600;
+      background: linear-gradient(145deg, #d44e6c, #b83b5e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo i {
+      font-size: 30px;
+      background: none;
+      -webkit-text-fill-color: #c44569;
+      color: #c44569;
+    }
+
+    .btn-primary {
+      background: #e6a0b5;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      color: white;
+      box-shadow: 0 4px 12px rgba(220, 130, 160, 0.4);
+      backdrop-filter: blur(5px);
+      transition: 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary i {
+      font-size: 16px;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96);
+      background: #d48da5;
+    }
+
+    /* filter bar (only country) */
+    .filter-section {
+      padding: 12px 20px 8px 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .filter-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 40px;
+      padding: 8px 18px;
+      border: 1px solid rgba(230, 170, 190, 0.5);
+      box-shadow: 0 6px 20px rgba(200, 120, 140, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-card i {
+      color: #c45d7a;
+      font-size: 18px;
+    }
+
+    .filter-select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 10px 0;
+      color: #331f2a;
+      outline: none;
+    }
+
+    .filter-select option {
+      background: #ffeef4;
+      color: #2d1f24;
+    }
+
+    /* profile grid — 2 columns */
+    .posts-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* luxury card */
+    .profile-card {
+      background: white;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(180, 100, 130, 0.2);
+      border: 1px solid rgba(230, 180, 190, 0.6);
+      transition: transform 0.15s;
+      backdrop-filter: blur(2px);
+    }
+
+    .profile-card:active {
+      transform: scale(0.98);
+    }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 1 / 1.1;
+      object-fit: cover;
+      background: #f8e1e8;
+    }
+
+    .card-info {
+      padding: 14px 12px 12px 12px;
+      background: rgba(255, 250, 252, 0.9);
+    }
+
+    .name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .profile-name {
+      font-weight: 700;
+      font-size: 17px;
+      color: #2f1d26;
+      letter-spacing: -0.2px;
+    }
+
+    .eye-toggle {
+      background: #ffeaef;
+      width: 38px;
+      height: 38px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b84c6c;
+      font-size: 18px;
+      border: 1px solid rgba(210, 130, 160, 0.5);
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 2px 8px rgba(200, 120, 140, 0.3);
+    }
+
+    .eye-toggle:active {
+      background: #f5d5e0;
+      color: #9e3b58;
+    }
+
+    .detail-line {
+      font-size: 13px;
+      color: #6e4b5a;
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .detail-line i {
+      width: 18px;
+      color: #c45d7a;
+      font-size: 13px;
+    }
+
+    .masked-phone {
+      font-family: 'SF Mono', monospace;
+      font-weight: 500;
+      background: #fcecf1;
+      padding: 4px 8px;
+      border-radius: 30px;
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      border: 1px solid #efc3d2;
+    }
+
+    .badge {
+      background: #ffe2ec;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #a14261;
+      display: inline-block;
+      margin-right: 4px;
+      margin-top: 6px;
+    }
+
+    /* MODAL base */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: rgba(255, 250, 250, 0.95);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      width: 100%;
+      max-width: 480px;
+      max-height: 85vh;
+      border-radius: 48px;
+      padding: 28px 20px 24px;
+      box-shadow: 0 30px 60px rgba(150, 60, 90, 0.5);
+      border: 1px solid rgba(255, 220, 230, 0.9);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px; right: 22px;
+      background: rgba(200, 130, 150, 0.2);
+      border: none;
+      width: 44px; height: 44px;
+      border-radius: 30px;
+      font-size: 26px;
+      color: #a53e5e;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+      border: 1px solid #f1c0d0;
+    }
+
+    .modal-close:active {
+      background: rgba(190, 110, 140, 0.3);
+    }
+
+    /* join form specific */
+    .join-form .form-row {
+      margin-bottom: 18px;
+    }
+
+    .form-row label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #3a2530;
+      margin-bottom: 5px;
+      display: block;
+      letter-spacing: -0.2px;
+    }
+
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 40px;
+      border: 1.5px solid #f2cfdc;
+      background: rgba(255, 240, 245, 0.6);
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-row input:focus, .form-row select:focus {
+      border-color: #cf8da8;
+      background: white;
+    }
+
+    .location-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .location-group select {
+      flex: 1 1 0;
+      min-width: 100px;
+    }
+
+    .photo-upload-area {
+      background: #ffeef4;
+      border: 2px dashed #d78ea8;
+      border-radius: 50px;
+      padding: 20px;
+      text-align: center;
+      color: #b34b6b;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .photo-preview {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .photo-preview img {
+      width: 70px;
+      height: 70px;
+      border-radius: 24px;
+      object-fit: cover;
+      border: 2px solid white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .submit-btn {
+      background: linear-gradient(145deg, #e68aac, #c55f83);
+      border: none;
+      padding: 18px;
+      width: 100%;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+      box-shadow: 0 10px 20px rgba(190, 90, 130, 0.5);
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    /* profile modal (eye detail) */
+    .profile-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .detail-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50px;
+      object-fit: cover;
+      border: 3px solid #f5b6cc;
+      box-shadow: 0 10px 20px #eeb6cb;
+    }
+
+    .detail-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1f1320;
+    }
+
+    .detail-info p {
+      margin: 12px 0;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #f3d8e2;
+      padding-bottom: 12px;
+    }
+
+    .detail-info i {
+      width: 28px;
+      color: #b54e70;
+    }
+
+    .full-phone {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: #fee7ef;
+      padding: 6px 16px;
+      border-radius: 40px;
+    }
+
+    /* gallery thumbnails inside profile modal */
+    .photo-thumb-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0 8px;
+    }
+    .photo-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 30px;
+      object-fit: cover;
+      border: 2px solid white;
+      box-shadow: 0 4px 12px rgba(150,70,90,0.3);
+      cursor: pointer;
+    }
+
+    /* fullscreen gallery overlay */
+    .gallery-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .gallery-overlay.active {
+      display: flex;
+    }
+
+    .gallery-img {
+      max-width: 90%;
+      max-height: 70%;
+      border-radius: 40px;
+      box-shadow: 0 30px 40px black;
+      border: 3px solid #ffcfdf;
+    }
+
+    .gallery-controls {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .gallery-btn {
+      background: rgba(255, 200, 220, 0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      width: 60px; height: 60px;
+      border-radius: 60px;
+      font-size: 32px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .gallery-btn:active {
+      background: rgba(255, 150, 190, 0.6);
+    }
+
+    .gallery-close {
+      position: absolute;
+      top: 50px; right: 30px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      font-size: 32px;
+      border: none;
+      width: 54px; height: 54px;
+      border-radius: 40px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #a76981;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo"><i class="fa-regular fa-gem"></i> RUNS</div>
+    <button class="btn-primary" onclick="openJoinModal()"><i class="fa-regular fa-pen-to-square"></i> join</button>
+  </div>
+</header>
+
+<!-- only country filter -->
+<div class="filter-section">
+  <div class="filter-card">
+    <i class="fa-solid fa-globe"></i>
+    <select id="countryFilter" class="filter-select" onchange="filterByCountry()">
+      <option value="">All countries</option>
+    </select>
+  </div>
+</div>
+
+<!-- profile grid -->
+<div class="posts-container" id="postsContainer">
+  <div style="grid-column: span 2; text-align: center; padding: 40px; color: #c2819b;">loading ...</div>
+</div>
+
+<div class="footer">
+  <span>© RUNS · exclusive encounters</span>
+</div>
+
+<!-- JOIN MODAL (register) -->
+<div class="modal-overlay" id="joinModal">
+  <div class="modal-card join-form">
+    <button class="modal-close" onclick="closeJoinModal()"><i class="fa-regular fa-circle-xmark"></i></button>
+    <h2 style="color: #b2466a; margin-bottom: 20px;">join the luxury</h2>
+
+    <div class="form-row">
+      <label>nickname</label>
+      <input type="text" id="nickname" placeholder="e.g. Coco">
+    </div>
+
+    <div class="form-row">
+      <label>phone</label>
+      <input type="tel" id="phone" placeholder="+1 234 567 890">
+    </div>
+    <div class="form-row">
+      <label>email</label>
+      <input type="email" id="email" placeholder="run@luxe.com">
+    </div>
+
+    <div class="form-row">
+      <label>age / gender</label>
+      <div style="display: flex; gap: 8px;">
+        <select id="age" style="flex:2">
+          <option>18-24</option><option>25-30</option><option>31-35</option><option>36-40</option><option>41+</option>
+        </select>
+        <select id="gender" style="flex:1">
+          <option>F</option><option>M</option><option>X</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- country / state / city (populated) -->
+    <div class="form-row">
+      <label>location</label>
+      <div class="location-group">
+        <select id="joinCountry" onchange="populateStates()">
+          <option value="">Country</option>
+        </select>
+        <select id="joinState" onchange="populateCities()">
+          <option value="">State</option>
+        </select>
+        <select id="joinCity">
+          <option value="">City</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>bio</label>
+      <textarea id="bio" rows="2" placeholder="exclusive vibe..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>photos (at least one)</label>
+      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+        <i class="fa-regular fa-images"></i> tap to select
+      </div>
+      <input type="file" id="photoInput" multiple accept="image/*" style="display:none" onchange="previewPhotos()">
+      <div class="photo-preview" id="photoPreview"></div>
+    </div>
+
+    <button class="submit-btn" onclick="submitProfile()">create profile</button>
+  </div>
+</div>
+
+<!-- PROFILE DETAIL MODAL (eye toggle) -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal-card" id="profileDetailCard">
+    <button class="modal-close" onclick="closeProfileModal()"><i class="fa-regular fa-circle-xmark"></i></button>
+    <div id="profileDetailContent"></div>
+  </div>
+</div>
+
+<!-- FULLSCREEN GALLERY MODAL -->
+<div class="gallery-overlay" id="galleryModal">
+  <button class="modal-close gallery-close" onclick="closeGallery()"><i class="fa-regular fa-circle-xmark"></i></button>
+  <img id="galleryMainImg" class="gallery-img" src="" alt="">
+  <div class="gallery-controls">
+    <div class="gallery-btn" onclick="galleryPrev()"><i class="fa-solid fa-chevron-left"></i></div>
+    <div class="gallery-btn" onclick="galleryNext()"><i class="fa-solid fa-chevron-right"></i></div>
+  </div>
+</div>
+
+<script>
+  // ---------- DATA: countries, states, cities (luxury simplified) ----------
+  const locationData = {
+    "USA": {
+      "California": ["Los Angeles", "San Francisco", "Beverly Hills"],
+      "New York": ["New York City", "Hamptons", "Buffalo"],
+      "Florida": ["Miami", "Palm Beach"]
+    },
+    "France": {
+      "Île-de-France": ["Paris", "Versailles"],
+      "Provence": ["Nice", "Cannes", "Saint-Tropez"]
+    },
+    "Italy": {
+      "Lombardy": ["Milan", "Lake Como"],
+      "Lazio": ["Rome"],
+      "Tuscany": ["Florence"]
+    },
+    "UK": {
+      "England": ["London", "Bath", "Oxford"],
+      "Scotland": ["Edinburgh", "Highlands"]
+    },
+    "UAE": {
+      "Dubai": ["Dubai City", "Palm Jumeirah"],
+      "Abu Dhabi": ["Abu Dhabi City"]
+    }
+  };
+
+  let profiles = [];
+  let selectedPhotos = [];
+
+  // current profile being viewed (for gallery)
+  let currentGalleryProfile = null;
+  let currentGalleryIndex = 0;
+
+  // ---------- init country dropdowns ----------
+  window.onload = function() {
+    populateCountrySelects();
+    loadProfiles();
+  };
+
+  function populateCountrySelects() {
+    const countryFilter = document.getElementById('countryFilter');
+    const joinCountry = document.getElementById('joinCountry');
+    const countries = Object.keys(locationData);
+    for (let c of countries) {
+      let opt1 = new Option(c, c);
+      let opt2 = new Option(c, c);
+      countryFilter.appendChild(opt1);
+      joinCountry.appendChild(opt2);
+    }
+  }
+
+  function populateStates() {
+    const country = document.getElementById('joinCountry').value;
+    const stateSelect = document.getElementById('joinState');
+    const citySelect = document.getElementById('joinCity');
+    stateSelect.innerHTML = '<option value="">State</option>';
+    citySelect.innerHTML = '<option value="">City</option>';
+    if (!country || !locationData[country]) return;
+    const states = Object.keys(locationData[country]);
+    for (let s of states) {
+      stateSelect.appendChild(new Option(s, s));
+    }
+  }
+
+  function populateCities() {
+    const country = document.getElementById('joinCountry').value;
+    const state = document.getElementById('joinState').value;
+    const citySelect = document.getElementById('joinCity');
+    citySelect.innerHTML = '<option value="">City</option>';
+    if (!country || !state || !locationData[country] || !locationData[country][state]) return;
+    const cities = locationData[country][state];
+    for (let city of cities) {
+      citySelect.appendChild(new Option(city, city));
+    }
+  }
+
+  // ---------- load / save profiles (localStorage) ----------
+  function loadProfiles() {
+    const saved = localStorage.getItem('runs-profiles');
+    if (saved) {
+      profiles = JSON.parse(saved);
+    } else {
+      // sample profiles with phone & email
+      profiles = [
+        { nickname: 'Isabella', age: '25-30', gender: 'F', country: 'Italy', state: 'Lombardy', city: 'Lake Como', bio: 'Luxury travel', phone: '+39 02 8891 2345', email: 'bella@run.it', photos: ['https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400'] },
+        { nickname: 'Margot', age: '31-35', gender: 'F', country: 'France', state: 'Provence', city: 'Cannes', bio: 'Film & yacht', phone: '+33 6 78 91 23 45', email: 'margot@run.fr', photos: ['https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'] },
+        { nickname: 'Oliver', age: '36-40', gender: 'M', country: 'UK', state: 'England', city: 'London', bio: 'Finance, art', phone: '+44 20 7946 0123', email: 'oliver@run.uk', photos: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'] }
+      ];
+      localStorage.setItem('runs-profiles', JSON.stringify(profiles));
+    }
+    displayProfiles();
+  }
+
+  function displayProfiles() {
+    const container = document.getElementById('postsContainer');
+    let html = '';
+    profiles.forEach((p, idx) => {
+      const maskedPhone = maskPhone(p.phone);
+      html += `
+        <div class="profile-card" data-profile-index="${idx}">
+          <img class="card-img" src="${p.photos[0]}" onerror="this.src='https://via.placeholder.com/300/ffd9e6/9c5678?text=${p.nickname}'">
+          <div class="card-info">
+            <div class="name-row">
+              <span class="profile-name">${p.nickname}, ${p.age}</span>
+              <div class="eye-toggle" onclick="openProfileModal(${idx})"><i class="fa-regular fa-eye"></i></div>
+            </div>
+            <div class="detail-line"><i class="fa-regular fa-location-dot"></i> ${p.city} · ${p.country}</div>
+            <div class="detail-line"><i class="fa-regular fa-phone"></i> <span class="masked-phone">${maskedPhone}</span></div>
+            <span class="badge">${p.gender}</span>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  function maskPhone(phone) {
+    if (!phone) return '••••••••';
+    const visible = phone.slice(0, -2);
+    return visible + '••';
+  }
+
+  // filter only by country
+  function filterByCountry() {
+    const country = document.getElementById('countryFilter').value;
+    const cards = document.querySelectorAll('.profile-card');
+    cards.forEach(card => {
+      const idx = card.dataset.profileIndex;
+      const profile = profiles[idx];
+      if (!profile) return;
+      if (country && profile.country !== country) {
+        card.style.display = 'none';
+      } else {
+        card.style.display = 'block';
+      }
+    });
+  }
+
+  // ---------- join modal ----------
+  function openJoinModal() { document.getElementById('joinModal').classList.add('active'); }
+  function closeJoinModal() { document.getElementById('joinModal').classList.remove('active'); }
+
+  function previewPhotos() {
+    const files = document.getElementById('photoInput').files;
+    const preview = document.getElementById('photoPreview');
+    preview.innerHTML = '';
+    selectedPhotos = [];
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        selectedPhotos.push(e.target.result);
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(files[i]);
+    }
+  }
+
+  function submitProfile() {
+    const nickname = document.getElementById('nickname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const age = document.getElementById('age').value;
+    const gender = document.getElementById('gender').value;
+    const country = document.getElementById('joinCountry').value;
+    const state = document.getElementById('joinState').value;
+    const city = document.getElementById('joinCity').value;
+    const bio = document.getElementById('bio').value.trim();
+
+    if (!nickname || !phone || !email || !country || !state || !city || selectedPhotos.length === 0) {
+      alert('please complete all fields and add at least one photo');
+      return;
+    }
+
+    const newProfile = { nickname, age, gender, country, state, city, bio, phone, email, photos: selectedPhotos };
+    profiles.push(newProfile);
+    localStorage.setItem('runs-profiles', JSON.stringify(profiles));
+    closeJoinModal();
+    displayProfiles();
+    // reset form
+    document.getElementById('nickname').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('bio').value = '';
+    document.getElementById('photoPreview').innerHTML = '';
+    selectedPhotos = [];
+  }
+
+  // ---------- profile modal (eye) ----------
+  function openProfileModal(index) {
+    const p = profiles[index];
+    currentGalleryProfile = p;  // for gallery
+    currentGalleryIndex = 0;
+    const content = document.getElementById('profileDetailContent');
+    const photoThumbs = p.photos.map((ph, i) => `<img class="photo-thumb" src="${ph}" onclick="openGallery(${i})">`).join('');
+    content.innerHTML = `
+      <div class="profile-detail-header">
+        <img class="detail-avatar" src="${p.photos[0]}">
+        <div><span class="detail-name">${p.nickname}</span></div>
+      </div>
+      <div class="detail-info">
+        <p><i class="fa-regular fa-phone"></i> <span class="full-phone">${p.phone}</span></p>
+        <p><i class="fa-regular fa-envelope"></i> ${p.email}</p>
+        <p><i class="fa-regular fa-location-dot"></i> ${p.city}, ${p.state}, ${p.country}</p>
+        <p><i class="fa-regular fa-user"></i> ${p.age} · ${p.gender}</p>
+        <p><i class="fa-regular fa-message"></i> ${p.bio || '✨'}</p>
+        <div class="photo-thumb-row">${photoThumbs}</div>
+      </div>
+    `;
+    document.getElementById('profileModal').classList.add('active');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('active');
+  }
+
+  // ---------- fullscreen gallery ----------
+  function openGallery(startIndex) {
+    if (!currentGalleryProfile) return;
+    currentGalleryIndex = startIndex;
+    document.getElementById('galleryMainImg').src = currentGalleryProfile.photos[currentGalleryIndex];
+    document.getElementById('galleryModal').classList.add('active');
+  }
+
+  function closeGallery() {
+    document.getElementById('galleryModal').classList.remove('active');
+  }
+
+  function galleryPrev() {
+    if (!currentGalleryProfile) return;
+    currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryProfile.photos.length) % currentGalleryProfile.photos.length;
+    document.getElementById('galleryMainImg').src = currentGalleryProfile.photos[currentGalleryIndex];
+  }
+
+  function galleryNext() {
+    if (!currentGalleryProfile) return;
+    currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryProfile.photos.length;
+    document.getElementById('galleryMainImg').src = currentGalleryProfile.photos[currentGalleryIndex];
+  }
+
+  // close modals on backdrop click
+  window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal-overlay')) {
+      closeJoinModal();
+      closeProfileModal();
+    }
+    if (e.target.classList.contains('gallery-overlay')) {
+      closeGallery();
+    }
+  });
+
+</script>
+</body>
+</html>
