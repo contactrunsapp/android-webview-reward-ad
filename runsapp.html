@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Run Shookup</title>
+  <style>
+    /* === CLEAN IPHONE-INSPIRED DESIGN === */
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --card: #f8f9fa;
+      --border: #e9ecef;
+      --primary: #ff385c;
+      --gold: #d4af37;
+    }
+    
+    body.dark {
+      --bg: #000000;
+      --text: #ffffff;
+      --card: #1c1c1e;
+      --border: #2c2c2e;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, 'Helvetica Neue', 'SF Pro Text', sans-serif;
+    }
+    
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s;
+    }
+    
+    body.modal-open {
+      overflow: hidden;
+    }
+    
+    /* === LOADING SPINNER === */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--border);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      gap: 10px;
+      color: var(--primary);
+    }
+    
+    /* === HEADER === */
+    .header {
+      background: var(--card);
+      padding: 15px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.8);
+    }
+    .dark .header {
+      background: rgba(0,0,0,0.8);
+    }
+    
+    .header-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      background: var(--primary);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .theme-toggle {
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* === FILTERS === */
+    .filters-section {
+      max-width: 480px;
+      margin: 15px auto;
+      padding: 0 15px;
+    }
+    
+    .filter-bar {
+      background: var(--card);
+      padding: 12px 15px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .filter-group select {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+    }
+    
+    /* === POSTS GRID (2 columns) === */
+    .posts-container {
+      max-width: 480px;
+      margin: 15px auto;
+      padding: 0 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    .profile-card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    
+    .profile-photo {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+    
+    .view-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 2;
+    }
+    
+    .profile-info {
+      padding: 10px;
+    }
+    
+    .profile-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .profile-location {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .profile-contact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    
+    .phone-number {
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+      filter: blur(3px);
+      opacity: 0.7;
+      transition: 0.2s;
+    }
+    
+    .eye-toggle {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    
+    .profile-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--primary);
+      color: white;
+      border-radius: 15px;
+      font-size: 10px;
+      margin-right: 4px;
+    }
+    
+    /* === PROFILE OVERLAY === */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .profile-overlay {
+      background: var(--card);
+      width: 90%;
+      max-width: 400px;
+      border-radius: 30px;
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .overlay-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .overlay-header h2 {
+      font-size: 20px;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--text);
+      cursor: pointer;
+    }
+    
+    .overlay-content {
+      padding: 20px;
+    }
+    
+    .overlay-photo {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .overlay-info p {
+      margin: 12px 0;
+      font-size: 16px;
+    }
+    
+    .overlay-info strong {
+      color: var(--primary);
+    }
+    
+    .view-count-badge {
+      background: var(--gold);
+      color: black;
+      padding: 5px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    
+    /* === LOGIN MODAL === */
+    .login-modal {
+      background: var(--card);
+      width: 90%;
+      max-width: 350px;
+      border-radius: 30px;
+      padding: 25px;
+    }
+    
+    /* === JOIN MODAL === */
+    .join-modal {
+      background: var(--card);
+      width: 90%;
+      max-width: 400px;
+      border-radius: 30px;
+      padding: 25px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+    }
+    
+    .location-row {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .location-row select {
+      flex: 1;
+    }
+    
+    .photo-upload-area {
+      border: 2px dashed var(--primary);
+      padding: 20px;
+      text-align: center;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+    
+    .photo-preview {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    
+    .photo-preview img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 13px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 50px;
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+
+<div class='header'>
+  <div class='header-inner'>
+    <span class='logo'>Run Shookup</span>
+    <div class='nav-buttons' id='authButtons'>
+      <button class='theme-toggle' onclick='toggleTheme()'>🌓</button>
+      <button class='btn btn-outline' onclick='openLoginModal()'>Login</button>
+      <button class='btn btn-primary' onclick='openJoinModal()'>Join</button>
+    </div>
+    <div class='user-info' id='userInfo' style='display: none;'>
+      <span id='loggedInUser'></span>
+      <button class='btn btn-outline' style='background: white; color: var(--primary);' onclick='logout()'>Logout</button>
+    </div>
+  </div>
+</div>
+
+<div class='filters-section'>
+  <div class='filter-bar'>
+    <div class='filter-group'>
+      <label>📍</label>
+      <select id='countryFilter' onchange='filterPosts()' disabled>
+        <option value=''>Loading countries...</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class='posts-container' id='postsContainer'>
+  <div class='loading'>
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <span>Loading profiles...</span>
+    </div>
+  </div>
+</div>
+
+<div class='footer'>
+  <p>© 2025 Run Shookup</p>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class='modal-overlay' id='loginModal'>
+  <div class='login-modal'>
+    <button class='close-btn' onclick='closeLoginModal()'>&times;</button>
+    <h2 style="margin-bottom: 20px;">Login</h2>
+    
+    <div class='form-group'>
+      <label>Nickname</label>
+      <input type='text' id='loginNickname' placeholder='Your nickname'>
+    </div>
+    
+    <button class='submit-btn' onclick='login()'>Login</button>
+    <p style='text-align: center; margin-top: 15px;'>
+      Don't have an account? <button class='btn btn-outline' style='padding: 5px 10px;' onclick='switchToJoin()'>Join</button>
+    </p>
+  </div>
+</div>
+
+<!-- JOIN MODAL -->
+<div class='modal-overlay' id='joinModal'>
+  <div class='join-modal'>
+    <button class='close-btn' onclick='closeJoinModal()'>&times;</button>
+    <h2 style="margin-bottom: 20px;">Create Profile</h2>
+    
+    <div class='form-group'>
+      <label>Nickname</label>
+      <input type='text' id='nickname' placeholder='Your name'>
+    </div>
+    
+    <div class='form-group'>
+      <label>Age</label>
+      <select id='age'>
+        <option>18-24</option>
+        <option>25-30</option>
+        <option>31-35</option>
+        <option>36-40</option>
+        <option>41+</option>
+      </select>
+    </div>
+    
+    <div class='form-group'>
+      <label>Gender</label>
+      <select id='gender'>
+        <option>Female</option>
+        <option>Male</option>
+        <option>Non-binary</option>
+      </select>
+    </div>
+    
+    <div class='form-group'>
+      <label>Location</label>
+      <div class='location-row'>
+        <select id='joinCountry' onchange='loadJoinStates()' disabled>
+          <option value=''>Loading countries...</option>
+        </select>
+        <select id='joinState' onchange='loadJoinCities()' disabled>
+          <option value=''>Select state</option>
+        </select>
+      </div>
+      <input type='text' id='joinCity' placeholder='City' style='margin-top: 8px;'>
+    </div>
+    
+    <div class='form-group'>
+      <label>Phone Number</label>
+      <input type='tel' id='phone' placeholder='+1 234 567 8900'>
+    </div>
+    
+    <div class='form-group'>
+      <label>About</label>
+      <textarea id='bio' rows='3' placeholder='Tell about yourself...'></textarea>
+    </div>
+    
+    <div class='form-group'>
+      <label>Photos</label>
+      <div class='photo-upload-area' onclick='document.getElementById("photoInput").click()'>
+        📸 Tap to select photos (max 3)
+      </div>
+      <input type='file' id='photoInput' multiple accept='image/*' style='display:none' onchange='previewPhotos()'>
+      <div class='photo-preview' id='photoPreview'></div>
+    </div>
+    
+    <button class='submit-btn' onclick='submitProfile()' id='submitProfileBtn'>Create Profile</button>
+    <div id='submitLoading' class='loading-container' style='display: none;'>
+      <div class="loading-spinner"></div>
+      <span>Creating profile...</span>
+    </div>
+    <p style='text-align: center; margin-top: 15px;'>
+      Already have an account? <button class='btn btn-outline' style='padding: 5px 10px;' onclick='switchToLogin()'>Login</button>
+    </p>
+  </div>
+</div>
+
+<!-- PROFILE OVERLAY -->
+<div class='modal-overlay' id='profileOverlay'>
+  <div class='profile-overlay' id='overlayContent'>
+    <!-- content injected by JS -->
+  </div>
+</div>
+
+<script>
+// ==================== LOCATION DATA ====================
+const LOCATIONS_URL = 'https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/json/countries%2Bstates%2Bcities.json';
+let worldData = [];
+let profiles = [];
+let selectedPhotos = [];
+let currentUser = null;
+
+// ==================== LOAD LOCATIONS ====================
+async function loadLocations() {
+  try {
+    const response = await fetch(LOCATIONS_URL);
+    worldData = await response.json();
+    worldData.sort((a, b) => a.name.localeCompare(b.name));
+    
+    // Populate main filter
+    const countryFilter = document.getElementById('countryFilter');
+    countryFilter.innerHTML = '<option value="">All Countries</option>';
+    
+    worldData.forEach(country => {
+      const option = document.createElement('option');
+      option.value = country.name;
+      option.textContent = country.name;
+      countryFilter.appendChild(option);
+    });
+    
+    countryFilter.disabled = false;
+    
+    // Populate join form country dropdown
+    const joinCountry = document.getElementById('joinCountry');
+    joinCountry.innerHTML = '<option value="">Select country</option>';
+    
+    worldData.forEach(country => {
+      const option = document.createElement('option');
+      option.value = country.name;
+      option.textContent = country.name;
+      joinCountry.appendChild(option);
+    });
+    
+    joinCountry.disabled = false;
+    
+  } catch (error) {
+    console.error('Error loading locations:', error);
+    document.getElementById('countryFilter').innerHTML = '<option value="">Error loading</option>';
+  }
+}
+
+// ==================== LOAD STATES ====================
+function loadJoinStates() {
+  const countryName = document.getElementById('joinCountry').value;
+  const stateSelect = document.getElementById('joinState');
+  
+  stateSelect.innerHTML = '<option value="">Loading states...</option>';
+  stateSelect.disabled = true;
+  
+  if (!countryName) {
+    stateSelect.innerHTML = '<option value="">Select country first</option>';
+    return;
+  }
+  
+  setTimeout(() => {
+    const country = worldData.find(c => c.name === countryName);
+    
+    if (country && country.states) {
+      stateSelect.innerHTML = '<option value="">Select state</option>';
+      country.states.sort((a, b) => a.name.localeCompare(b.name));
+      
+      country.states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state.name;
+        option.textContent = state.name;
+        stateSelect.appendChild(option);
+      });
+      
+      stateSelect.disabled = false;
+    } else {
+      stateSelect.innerHTML = '<option value="">No states available</option>';
+    }
+  }, 300);
+}
+
+function loadJoinCities() {
+  // Not needed for now
+}
+
+// ==================== LOAD PROFILES ====================
+function loadProfiles() {
+  document.getElementById('postsContainer').innerHTML = `
+    <div class="loading">
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <span>Loading profiles...</span>
+      </div>
+    </div>
+  `;
+  
+  setTimeout(() => {
+    const saved = localStorage.getItem('runshookup-profiles');
+    if(saved) {
+      profiles = JSON.parse(saved);
+    } else {
+      profiles = [
+        {
+          id: '1',
+          nickname: 'Sarah',
+          age: '25-30',
+          gender: 'Female',
+          country: 'United States',
+          city: 'New York',
+          phone: '+1 212 555 1234',
+          bio: 'Love hiking and coffee',
+          photos: ['https://images.unsplash.com/photo-1494790108777-283128473ab8?w=400'],
+          views: 0
+        },
+        {
+          id: '2',
+          nickname: 'Mike',
+          age: '31-35',
+          gender: 'Male',
+          country: 'United Kingdom',
+          city: 'London',
+          phone: '+44 20 7946 0123',
+          bio: 'Foodie and traveler',
+          photos: ['https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400'],
+          views: 0
+        }
+      ];
+      localStorage.setItem('runshookup-profiles', JSON.stringify(profiles));
+    }
+    displayProfiles();
+  }, 800);
+}
+
+// ==================== DISPLAY PROFILES ====================
+function displayProfiles() {
+  const container = document.getElementById('postsContainer');
+  let html = '';
+  
+  profiles.forEach((p, index) => {
+    // Hide phone number if it's the current user viewing their own profile
+    let phoneDisplay = '••••••••';
+    if (!currentUser || currentUser.id !== p.id) {
+      phoneDisplay = p.phone ? p.phone.slice(0, -2) + '••' : '••••';
+    }
+    
+    html += `
+      <div class='profile-card' data-id='${p.id}'>
+        <img class='profile-photo' src='${p.photos[0]}' onerror="this.src='https://via.placeholder.com/300/ff385c/fff?text=${p.nickname}'">
+        <div class='view-count'>👁️ ${p.views || 0}</div>
+        <div class='profile-info'>
+          <div class='profile-name'>${p.nickname}, ${p.age}</div>
+          <div class='profile-location'>📍 ${p.city}, ${p.country}</div>
+          <div class='profile-contact'>
+            <span class='phone-number' id='phone-${p.id}'>${phoneDisplay}</span>
+            <button class='eye-toggle' onclick='event.stopPropagation();viewProfile("${p.id}")'>👁️</button>
+          </div>
+          <span class='profile-badge'>${p.gender}</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  updateAuthUI();
+}
+
+// ==================== VIEW PROFILE ====================
+function viewProfile(profileId) {
+  const profileIndex = profiles.findIndex(p => p.id === profileId);
+  if (profileIndex === -1) return;
+  
+  const p = profiles[profileIndex];
+  
+  // Increment view count (unless it's the current user viewing their own profile)
+  if (!currentUser || currentUser.id !== p.id) {
+    p.views = (p.views || 0) + 1;
+    profiles[profileIndex] = p;
+    localStorage.setItem('runshookup-profiles', JSON.stringify(profiles));
+  }
+  
+  // Show overlay
+  const overlay = document.getElementById('profileOverlay');
+  const content = document.getElementById('overlayContent');
+  
+  // Determine if phone should be hidden (if it's current user viewing their own profile)
+  const showPhone = !(currentUser && currentUser.id === p.id);
+  
+  let photosHtml = '';
+  if(p.photos && p.photos.length > 0) {
+    photosHtml = `<img class='overlay-photo' src='${p.photos[0]}' onerror="this.src='https://via.placeholder.com/400/ff385c/fff?text=${p.nickname}'">`;
+  }
+  
+  content.innerHTML = `
+    <div class='overlay-header'>
+      <h2>${p.nickname}, ${p.age}</h2>
+      <button class='close-btn' onclick='closeProfileOverlay()'>&times;</button>
+    </div>
+    <div class='overlay-content'>
+      ${photosHtml}
+      <div class='overlay-info'>
+        <p><strong>📍 Location:</strong> ${p.city}, ${p.country}</p>
+        <p><strong>⚥ Gender:</strong> ${p.gender}</p>
+        <p><strong>📞 Phone:</strong> ${showPhone ? p.phone : '🔒 Private'}</p>
+        <p><strong>📝 About:</strong> ${p.bio || 'No bio yet'}</p>
+        ${currentUser && currentUser.id === p.id ? `<p class='view-count-badge'>👁️ Your profile has been viewed ${p.views || 0} times</p>` : ''}
+      </div>
+    </div>
+  `;
+  
+  overlay.classList.add('active');
+  document.body.classList.add('modal-open');
+  
+  // Refresh display to update view count
+  displayProfiles();
+}
+
+// ==================== AUTH FUNCTIONS ====================
+function openLoginModal() {
+  document.getElementById('loginModal').classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+function login() {
+  const nickname = document.getElementById('loginNickname').value.trim();
+  
+  if (!nickname) {
+    alert('Please enter your nickname');
+    return;
+  }
+  
+  // Find user by nickname (case insensitive)
+  const user = profiles.find(p => p.nickname.toLowerCase() === nickname.toLowerCase());
+  
+  if (user) {
+    currentUser = user;
+    closeLoginModal();
+    updateAuthUI();
+    displayProfiles(); // Refresh to hide own phone number
+    alert(`Welcome back, ${user.nickname}!`);
+  } else {
+    alert('User not found. Please join first.');
+  }
+}
+
+function logout() {
+  currentUser = null;
+  updateAuthUI();
+  displayProfiles(); // Refresh to show blurred numbers again
+}
+
+function updateAuthUI() {
+  const authButtons = document.getElementById('authButtons');
+  const userInfo = document.getElementById('userInfo');
+  const loggedInUser = document.getElementById('loggedInUser');
+  
+  if (currentUser) {
+    authButtons.style.display = 'none';
+    userInfo.style.display = 'flex';
+    loggedInUser.textContent = `👤 ${currentUser.nickname}`;
+  } else {
+    authButtons.style.display = 'flex';
+    userInfo.style.display = 'none';
+  }
+}
+
+function switchToJoin() {
+  closeLoginModal();
+  openJoinModal();
+}
+
+function switchToLogin() {
+  closeJoinModal();
+  openLoginModal();
+}
+
+// ==================== JOIN MODAL FUNCTIONS ====================
+function openJoinModal() {
+  document.getElementById('joinModal').classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function closeJoinModal() {
+  document.getElementById('joinModal').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+function previewPhotos() {
+  const files = document.getElementById('photoInput').files;
+  const preview = document.getElementById('photoPreview');
+  preview.innerHTML = '';
+  selectedPhotos = [];
+  
+  if(files.length > 3) {
+    alert('Maximum 3 photos allowed');
+    return;
+  }
+  
+  for(let i = 0; i < files.length; i++) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedPhotos.push(e.target.result);
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(files[i]);
+  }
+}
+
+function submitProfile() {
+  const nickname = document.getElementById('nickname').value.trim();
+  const age = document.getElementById('age').value;
+  const gender = document.getElementById('gender').value;
+  const country = document.getElementById('joinCountry').value;
+  const city = document.getElementById('joinCity').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const bio = document.getElementById('bio').value.trim();
+  
+  if(!nickname || !country || !city || !phone || selectedPhotos.length === 0) {
+    alert('Please fill all required fields and add a photo');
+    return;
+  }
+  
+  // Check if nickname already exists
+  if (profiles.some(p => p.nickname.toLowerCase() === nickname.toLowerCase())) {
+    alert('Nickname already taken. Please choose another.');
+    return;
+  }
+  
+  // Show loading
+  const submitBtn = document.getElementById('submitProfileBtn');
+  const submitLoading = document.getElementById('submitLoading');
+  submitBtn.style.display = 'none';
+  submitLoading.style.display = 'flex';
+  
+  setTimeout(() => {
+    const newProfile = {
+      id: Date.now().toString(),
+      nickname,
+      age,
+      gender,
+      country,
+      city,
+      phone,
+      bio,
+      photos: selectedPhotos,
+      views: 0
+    };
+    
+    profiles.push(newProfile);
+    localStorage.setItem('runshookup-profiles', JSON.stringify(profiles));
+    
+    closeJoinModal();
+    displayProfiles();
+    
+    // Clear form
+    document.getElementById('nickname').value = '';
+    document.getElementById('joinCountry').value = '';
+    document.getElementById('joinState').innerHTML = '<option value="">Select state</option>';
+    document.getElementById('joinCity').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('bio').value = '';
+    document.getElementById('photoPreview').innerHTML = '';
+    selectedPhotos = [];
+    
+    // Reset button
+    submitBtn.style.display = 'block';
+    submitLoading.style.display = 'none';
+    
+    alert('Profile created! You can now login.');
+  }, 1000);
+}
+
+// ==================== FILTER POSTS ====================
+function filterPosts() {
+  const country = document.getElementById('countryFilter').value;
+  const cards = document.querySelectorAll('.profile-card');
+  
+  cards.forEach(card => {
+    const location = card.querySelector('.profile-location').textContent;
+    if(country && !location.includes(country)) {
+      card.style.display = 'none';
+    } else {
+      card.style.display = 'block';
+    }
+  });
+}
+
+// ==================== CLOSE OVERLAY ====================
+function closeProfileOverlay() {
+  document.getElementById('profileOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+// ==================== THEME TOGGLE ====================
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('runshookup-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
+
+// ==================== CLOSE MODALS ON OUTSIDE CLICK ====================
+window.addEventListener('click', (e) => {
+  if(e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  }
+});
+
+// ==================== INITIALIZE ====================
+document.addEventListener('DOMContentLoaded', () => {
+  // Load saved theme
+  if(localStorage.getItem('runshookup-theme') === 'dark') {
+    document.body.classList.add('dark');
+  }
+  
+  // Load locations first
+  loadLocations();
+  
+  // Then load profiles
+  loadProfiles();
+});
+</script>
+
+</body>
+</html>
