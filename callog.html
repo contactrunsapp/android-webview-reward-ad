@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>RUNS · luxury connection</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- LIGHT THEME (default) ----- */
+    :root {
+      --bg: #fff9fc;
+      --text: #1e1e1e;
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --card-bg: white;
+      --card-info-bg: rgba(255, 250, 252, 0.9);
+      --border-light: rgba(224, 170, 180, 0.3);
+      --border-card: rgba(230, 180, 190, 0.6);
+      --filter-bg: rgba(255, 255, 255, 0.75);
+      --filter-border: rgba(230, 170, 190, 0.5);
+      --primary-pink: #c45d7a;
+      --primary-dark: #b84c6c;
+      --pale-pink: #ffeef4;
+      --badge-bg: #ffe2ec;
+      --badge-text: #a14261;
+      --modal-bg: rgba(255, 250, 250, 0.95);
+      --input-bg: rgba(255, 240, 245, 0.6);
+      --input-border: #f2cfdc;
+      --shadow-color: rgba(200, 120, 140, 0.2);
+      --icon-color: #c45d7a;
+      --footer-text: #a76981;
+      --spinner-track: rgba(200, 120, 140, 0.3);
+      --spinner-top: #c45d7a;
+      --pay-btn: #e68aac;
+    }
+
+    /* ----- DARK THEME ----- */
+    body.dark {
+      --bg: #1a1320;
+      --text: #f0e0e8;
+      --header-bg: rgba(30, 20, 30, 0.9);
+      --card-bg: #2d1f28;
+      --card-info-bg: rgba(45, 30, 40, 0.9);
+      --border-light: #402a35;
+      --border-card: #634154;
+      --filter-bg: rgba(40, 25, 35, 0.85);
+      --filter-border: #7a4b62;
+      --primary-pink: #e58aa9;
+      --primary-dark: #cf7897;
+      --pale-pink: #392b33;
+      --badge-bg: #4d3142;
+      --badge-text: #f0b0cb;
+      --modal-bg: rgba(40, 25, 35, 0.97);
+      --input-bg: #342a32;
+      --input-border: #634154;
+      --shadow-color: rgba(180, 100, 140, 0.4);
+      --icon-color: #e58aa9;
+      --footer-text: #b28b9d;
+      --spinner-track: rgba(230, 150, 180, 0.3);
+      --spinner-top: #e58aa9;
+      --pay-btn: #cf7897;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'Helvetica Neue', 'SF Pro Text', sans-serif;
+      padding-bottom: 30px;
+    }
+
+    /* header */
+    .header {
+      background: var(--header-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 18px 20px 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: 0 4px 20px var(--shadow-color);
+      cursor: pointer;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 600;
+      background: linear-gradient(145deg, #d44e6c, #b83b5e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo i {
+      font-size: 30px;
+      background: none;
+      -webkit-text-fill-color: #c44569;
+      color: #c44569;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      background: var(--pale-pink);
+      border: 1px solid var(--border-card);
+      width: 44px;
+      height: 44px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-pink);
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .btn-primary {
+      background: #e6a0b5;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      color: white;
+      box-shadow: 0 4px 12px rgba(220, 130, 160, 0.4);
+      backdrop-filter: blur(5px);
+      transition: 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96);
+      background: #d48da5;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* filter bar */
+    .filter-section {
+      padding: 12px 20px 8px 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .filter-card {
+      background: var(--filter-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 40px;
+      padding: 8px 18px;
+      border: 1px solid var(--filter-border);
+      box-shadow: 0 6px 20px var(--shadow-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-card i {
+      color: var(--primary-pink);
+      font-size: 18px;
+    }
+
+    .filter-select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 10px 0;
+      color: var(--text);
+      outline: none;
+    }
+
+    .filter-select:disabled {
+      opacity: 0.5;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--spinner-track);
+      border-radius: 50%;
+      border-top-color: var(--spinner-top);
+      animation: spin 0.8s linear infinite;
+      margin-left: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .global-loader {
+      text-align: center;
+      padding: 20px;
+      color: var(--primary-pink);
+    }
+
+    /* profile grid */
+    .posts-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .profile-card {
+      background: var(--card-bg);
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px var(--shadow-color);
+      border: 1px solid var(--border-card);
+      transition: transform 0.15s;
+    }
+
+    .profile-card:active {
+      transform: scale(0.98);
+    }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 1 / 1.1;
+      object-fit: cover;
+      background: var(--pale-pink);
+    }
+
+    .card-info {
+      padding: 14px 12px 12px 12px;
+      background: var(--card-info-bg);
+    }
+
+    .name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .profile-name {
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+    }
+
+    .eye-toggle {
+      background: var(--pale-pink);
+      width: 38px;
+      height: 38px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-pink);
+      font-size: 18px;
+      border: 1px solid var(--border-card);
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .detail-line {
+      font-size: 13px;
+      color: var(--text);
+      opacity: 0.9;
+      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .detail-line i {
+      width: 18px;
+      color: var(--primary-pink);
+    }
+
+    .masked-phone {
+      font-family: 'SF Mono', monospace;
+      font-weight: 500;
+      background: var(--pale-pink);
+      padding: 4px 8px;
+      border-radius: 30px;
+      display: inline-block;
+      font-size: 13px;
+      border: 1px solid var(--border-card);
+      color: var(--text);
+    }
+
+    .badge {
+      background: var(--badge-bg);
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--badge-text);
+      display: inline-block;
+      margin-right: 4px;
+      margin-top: 6px;
+    }
+
+    /* modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--modal-bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      width: 100%;
+      max-width: 480px;
+      max-height: 85vh;
+      border-radius: 48px;
+      padding: 28px 20px 24px;
+      box-shadow: 0 30px 60px rgba(150, 60, 90, 0.5);
+      border: 1px solid var(--border-card);
+      overflow-y: auto;
+      position: relative;
+      color: var(--text);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px; right: 22px;
+      background: rgba(200, 130, 150, 0.2);
+      border: none;
+      width: 44px; height: 44px;
+      border-radius: 30px;
+      font-size: 26px;
+      color: var(--primary-pink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--border-card);
+    }
+
+    .form-row {
+      margin-bottom: 18px;
+    }
+
+    .form-row label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 40px;
+      border: 1.5px solid var(--input-border);
+      background: var(--input-bg);
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+      color: var(--text);
+    }
+
+    .form-row input:focus, .form-row select:focus {
+      border-color: var(--primary-pink);
+      background: var(--card-bg);
+    }
+
+    .location-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .location-group select {
+      flex: 1 1 0;
+      min-width: 100px;
+    }
+
+    .photo-upload-area {
+      background: var(--pale-pink);
+      border: 2px dashed var(--primary-pink);
+      border-radius: 50px;
+      padding: 20px;
+      text-align: center;
+      color: var(--primary-pink);
+      font-weight: 500;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .photo-preview {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .photo-preview img {
+      width: 70px;
+      height: 70px;
+      border-radius: 24px;
+      object-fit: cover;
+      border: 2px solid var(--border-card);
+      box-shadow: 0 4px 8px var(--shadow-color);
+    }
+
+    .submit-btn {
+      background: linear-gradient(145deg, #e68aac, #c55f83);
+      border: none;
+      padding: 18px;
+      width: 100%;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+      box-shadow: 0 10px 20px rgba(190, 90, 130, 0.5);
+      cursor: pointer;
+      margin-top: 12px;
+      transition: 0.2s;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* profile detail modal */
+    .profile-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .detail-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50px;
+      object-fit: cover;
+      border: 3px solid var(--primary-pink);
+    }
+
+    .detail-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .detail-info p {
+      margin: 12px 0;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-card);
+      padding-bottom: 12px;
+    }
+
+    .full-phone {
+      font-weight: 600;
+      background: var(--pale-pink);
+      padding: 6px 16px;
+      border-radius: 40px;
+      color: var(--text);
+    }
+
+    .pay-btn {
+      background: var(--pay-btn);
+      border: none;
+      padding: 14px 20px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 16px;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      margin: 10px 0;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .photo-thumb-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0 8px;
+    }
+    .photo-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 30px;
+      object-fit: cover;
+      border: 2px solid var(--border-card);
+      box-shadow: 0 4px 12px var(--shadow-color);
+      cursor: pointer;
+    }
+
+    /* fullscreen gallery */
+    .gallery-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .gallery-overlay.active {
+      display: flex;
+    }
+
+    .gallery-img {
+      max-width: 90%;
+      max-height: 70%;
+      border-radius: 40px;
+      box-shadow: 0 30px 40px black;
+      border: 3px solid #ffcfdf;
+    }
+
+    .gallery-controls {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .gallery-btn {
+      background: rgba(255, 200, 220, 0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      width: 60px; height: 60px;
+      border-radius: 60px;
+      font-size: 32px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    .gallery-close {
+      position: absolute;
+      top: 50px; right: 30px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      font-size: 32px;
+      border: none;
+      width: 54px; height: 54px;
+      border-radius: 40px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--footer-text);
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    .inline-loader {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--spinner-track);
+      border-radius: 50%;
+      border-top-color: var(--spinner-top);
+      animation: spin 0.8s linear infinite;
+      margin-left: 8px;
+    }
+
+    /* Admin panel (hidden by default) */
+    .admin-panel {
+      display: none;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: 40px;
+      border: 1px solid var(--border-card);
+    }
+
+    .admin-panel.show {
+      display: block;
+    }
+
+    .admin-panel h3 {
+      color: var(--primary-pink);
+      margin-bottom: 15px;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-card);
+      color: var(--text);
+    }
+
+    .admin-table th {
+      background: var(--pale-pink);
+      font-weight: 600;
+    }
+
+    .paid-badge {
+      background: #4CAF50;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header" id="headerLogo" onclick="handleAdminTap()">
+  <div class="header-inner">
+    <div class="logo"><i class="fa-regular fa-gem"></i> RUNS</div>
+    <div class="header-actions">
+      <!-- Dark/light toggle -->
+      <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+        <i class="fa-regular fa-moon" id="themeIcon"></i>
+      </div>
+      <button class="btn-primary" onclick="openJoinModal()"><i class="fa-regular fa-pen-to-square"></i> join</button>
+    </div>
+  </div>
+</header>
+
+<!-- filter with loader -->
+<div class="filter-section">
+  <div class="filter-card">
+    <i class="fa-solid fa-globe"></i>
+    <select id="countryFilter" class="filter-select" onchange="filterByCountry()" disabled>
+      <option value="">Loading countries...</option>
+    </select>
+    <span id="filterLoader" class="loading-spinner"></span>
+  </div>
+</div>
+
+<!-- profile grid -->
+<div class="posts-container" id="postsContainer">
+  <div class="global-loader" id="globalLoader"><i class="fa-regular fa-hourglass-half"></i> loading profiles...</div>
+</div>
+
+<!-- Admin Panel (hidden, revealed by tapping logo 5 times) -->
+<div class="admin-panel" id="adminPanel">
+  <h3><i class="fa-regular fa-lock"></i> Admin Dashboard</h3>
+  <table class="admin-table" id="adminTable">
+    <thead>
+      <tr><th>Nickname</th><th>Phone</th><th>Email</th><th>Paid</th></tr>
+    </thead>
+    <tbody id="adminTableBody"></tbody>
+  </table>
+  <button class="btn-primary" style="margin-top:15px;" onclick="hideAdminPanel()">Close</button>
+</div>
+
+<div class="footer">
+  <span>© RUNS · exclusive encounters</span>
+</div>
+
+<!-- JOIN MODAL -->
+<div class="modal-overlay" id="joinModal">
+  <div class="modal-card join-form">
+    <button class="modal-close" onclick="closeJoinModal()"><i class="fa-regular fa-circle-xmark"></i></button>
+    <h2 style="color: var(--primary-pink); margin-bottom: 20px;">join the luxury</h2>
+
+    <div class="form-row">
+      <label>nickname</label>
+      <input type="text" id="nickname" placeholder="e.g. Coco">
+    </div>
+
+    <div class="form-row">
+      <label>phone</label>
+      <input type="tel" id="phone" placeholder="+1 234 567 890">
+    </div>
+
+    <div class="form-row">
+      <label>email</label>
+      <input type="email" id="email" placeholder="run@luxe.com">
+    </div>
+
+    <div class="form-row">
+      <label>age / gender</label>
+      <div style="display: flex; gap: 8px;">
+        <select id="age" style="flex:2">
+          <option>18-24</option><option>25-30</option><option>31-35</option><option>36-40</option><option>41+</option>
+        </select>
+        <select id="gender" style="flex:1">
+          <option>F</option><option>M</option><option>X</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- dynamic location -->
+    <div class="form-row">
+      <label>location</label>
+      <div class="location-group">
+        <select id="joinCountry" onchange="onCountryChange()" disabled>
+          <option value="">Loading countries...</option>
+        </select>
+        <select id="joinState" onchange="onStateChange()" disabled>
+          <option value="">Select country first</option>
+        </select>
+        <select id="joinCity" disabled>
+          <option value="">Select state first</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>bio</label>
+      <textarea id="bio" rows="2" placeholder="exclusive vibe..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>photos (at least one)</label>
+      <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+        <i class="fa-regular fa-images"></i> tap to select
+      </div>
+      <input type="file" id="photoInput" multiple accept="image/*" style="display:none" onchange="previewPhotos()">
+      <div class="photo-preview" id="photoPreview"></div>
+    </div>
+
+    <button class="submit-btn" id="submitProfileBtn" onclick="submitProfile()">create profile</button>
+  </div>
+</div>
+
+<!-- PROFILE DETAIL MODAL (eye) -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal-card" id="profileDetailCard">
+    <button class="modal-close" onclick="closeProfileModal()"><i class="fa-regular fa-circle-xmark"></i></button>
+    <div id="profileDetailContent"></div>
+  </div>
+</div>
+
+<!-- FULLSCREEN GALLERY -->
+<div class="gallery-overlay" id="galleryModal">
+  <button class="modal-close gallery-close" onclick="closeGallery()"><i class="fa-regular fa-circle-xmark"></i></button>
+  <img id="galleryMainImg" class="gallery-img" src="" alt="">
+  <div class="gallery-controls">
+    <div class="gallery-btn" onclick="galleryPrev()"><i class="fa-solid fa-chevron-left"></i></div>
+    <div class="gallery-btn" onclick="galleryNext()"><i class="fa-solid fa-chevron-right"></i></div>
+  </div>
+</div>
+
+<script>
+  // ---------- DARK/LIGHT MODE ----------
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+
+  function setTheme(theme) {
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+      localStorage.setItem('runs-theme', 'dark');
+    } else {
+      document.body.classList.remove('dark');
+      themeIcon.classList.remove('fa-sun');
+      themeIcon.classList.add('fa-moon');
+      localStorage.setItem('runs-theme', 'light');
+    }
+  }
+
+  function toggleTheme() {
+    if (document.body.classList.contains('dark')) {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+  }
+
+  const savedTheme = localStorage.getItem('runs-theme') || 'light';
+  setTheme(savedTheme);
+
+  // ---------- PAYMENT LINK ----------
+  const PAYMENT_LINK = 'https://flutterwave.com/pay/vqb5kirlrjl4'; // Your custom payment link
+
+  // ---------- LOCATION LOADING ----------
+  const LOCATIONS_URL = 'https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/json/countries%2Bstates%2Bcities.json';
+  let worldData = [];
+  let profiles = [];
+  let selectedFiles = [];
+
+  // Payment tracking: object where keys are profile indices that have been paid for on this device
+  let paidProfiles = JSON.parse(localStorage.getItem('runs-paid')) || {};
+
+  let locationsLoaded = false;
+
+  const countryFilter = document.getElementById('countryFilter');
+  const filterLoader = document.getElementById('filterLoader');
+  const joinCountry = document.getElementById('joinCountry');
+  const joinState = document.getElementById('joinState');
+  const joinCity = document.getElementById('joinCity');
+  const globalLoader = document.getElementById('globalLoader');
+  const submitBtn = document.getElementById('submitProfileBtn');
+
+  async function loadLocations() {
+    try {
+      const response = await fetch(LOCATIONS_URL);
+      worldData = await response.json();
+      worldData.sort((a, b) => a.name.localeCompare(b.name));
+
+      countryFilter.innerHTML = '<option value="">All countries</option>';
+      joinCountry.innerHTML = '<option value="">Select country</option>';
+
+      worldData.forEach(country => {
+        const opt1 = new Option(country.name, country.name);
+        const opt2 = new Option(country.name, country.name);
+        countryFilter.appendChild(opt1);
+        joinCountry.appendChild(opt2);
+      });
+
+      countryFilter.disabled = false;
+      joinCountry.disabled = false;
+      filterLoader.style.display = 'none';
+      locationsLoaded = true;
+
+      loadProfiles();
+    } catch (error) {
+      console.error('Failed to load locations:', error);
+      countryFilter.innerHTML = '<option value="">Error loading</option>';
+      filterLoader.style.display = 'none';
+    }
+  }
+
+  function onCountryChange() {
+    const selectedCountryName = joinCountry.value;
+    joinState.disabled = true;
+    joinCity.disabled = true;
+    joinState.innerHTML = '<option value="">Loading states...</option>';
+    joinCity.innerHTML = '<option value="">Select state first</option>';
+
+    if (!selectedCountryName) {
+      joinState.innerHTML = '<option value="">Select country first</option>';
+      return;
+    }
+
+    const country = worldData.find(c => c.name === selectedCountryName);
+    if (country && country.states && country.states.length) {
+      country.states.sort((a, b) => a.name.localeCompare(b.name));
+      joinState.innerHTML = '<option value="">Select state</option>';
+      country.states.forEach(state => {
+        joinState.appendChild(new Option(state.name, state.name));
+      });
+      joinState.disabled = false;
+    } else {
+      joinState.innerHTML = '<option value="">No states available</option>';
+    }
+  }
+
+  function onStateChange() {
+    const selectedCountryName = joinCountry.value;
+    const selectedStateName = joinState.value;
+    joinCity.disabled = true;
+    joinCity.innerHTML = '<option value="">Loading cities...</option>';
+
+    if (!selectedCountryName || !selectedStateName) {
+      joinCity.innerHTML = '<option value="">Select state first</option>';
+      return;
+    }
+
+    const country = worldData.find(c => c.name === selectedCountryName);
+    if (country) {
+      const state = country.states.find(s => s.name === selectedStateName);
+      if (state && state.cities && state.cities.length) {
+        state.cities.sort((a, b) => a.name.localeCompare(b.name));
+        joinCity.innerHTML = '<option value="">Select city</option>';
+        state.cities.forEach(city => {
+          joinCity.appendChild(new Option(city.name, city.name));
+        });
+        joinCity.disabled = false;
+      } else {
+        joinCity.innerHTML = '<option value="">No cities</option>';
+      }
+    }
+  }
+
+  function loadProfiles() {
+    const saved = localStorage.getItem('runs-profiles');
+    if (saved) {
+      profiles = JSON.parse(saved);
+    } else {
+      profiles = [
+        { nickname: 'Isabella', age: '25-30', gender: 'F', country: 'Italy', state: 'Lombardy', city: 'Milan', bio: 'Luxury travel', phone: '+39 02 8891 2345', email: 'bella@run.it', photos: ['https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400'] },
+        { nickname: 'Margot', age: '31-35', gender: 'F', country: 'France', state: 'Île-de-France', city: 'Paris', bio: 'Film & yacht', phone: '+33 6 78 91 23 45', email: 'margot@run.fr', photos: ['https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'] },
+        { nickname: 'Oliver', age: '36-40', gender: 'M', country: 'United Kingdom', state: 'England', city: 'London', bio: 'Finance, art', phone: '+44 20 7946 0123', email: 'oliver@run.uk', photos: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'] }
+      ];
+      localStorage.setItem('runs-profiles', JSON.stringify(profiles));
+    }
+    displayProfiles();
+  }
+
+  function displayProfiles() {
+    const container = document.getElementById('postsContainer');
+    if (!profiles.length) {
+      container.innerHTML = '<div class="global-loader">no profiles yet</div>';
+      return;
+    }
+    let html = '';
+    profiles.forEach((p, idx) => {
+      const maskedPhone = maskPhone(p.phone);
+      html += `
+        <div class="profile-card" data-profile-index="${idx}">
+          <img class="card-img" src="${p.photos[0]}" onerror="this.src='https://via.placeholder.com/300/ffd9e6/9c5678?text=${p.nickname}'">
+          <div class="card-info">
+            <div class="name-row">
+              <span class="profile-name">${p.nickname}, ${p.age}</span>
+              <div class="eye-toggle" onclick="openProfileModal(${idx})"><i class="fa-regular fa-eye"></i></div>
+            </div>
+            <div class="detail-line"><i class="fa-regular fa-location-dot"></i> ${p.city}, ${p.country}</div>
+            <div class="detail-line"><i class="fa-regular fa-phone"></i> <span class="masked-phone">${maskedPhone}</span></div>
+            <span class="badge">${p.gender}</span>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+    globalLoader.style.display = 'none';
+  }
+
+  function maskPhone(phone) {
+    if (!phone) return '••••••••';
+    return phone.slice(0, -2) + '••';
+  }
+
+  function filterByCountry() {
+    if (!locationsLoaded) return;
+    const country = countryFilter.value;
+    const cards = document.querySelectorAll('.profile-card');
+    cards.forEach(card => {
+      const idx = card.dataset.profileIndex;
+      const profile = profiles[idx];
+      if (!profile) return;
+      if (country && profile.country !== country) {
+        card.style.display = 'none';
+      } else {
+        card.style.display = 'block';
+      }
+    });
+  }
+
+  // ---------- join modal ----------
+  function openJoinModal() {
+    if (!locationsLoaded) {
+      alert('Locations still loading, please wait...');
+      return;
+    }
+    document.getElementById('joinModal').classList.add('active');
+  }
+  function closeJoinModal() {
+    document.getElementById('joinModal').classList.remove('active');
+  }
+
+  function previewPhotos() {
+    const files = document.getElementById('photoInput').files;
+    const preview = document.getElementById('photoPreview');
+    preview.innerHTML = '';
+    selectedFiles = Array.from(files);
+
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(files[i]);
+    }
+  }
+
+  async function submitProfile() {
+    const nickname = document.getElementById('nickname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const age = document.getElementById('age').value;
+    const gender = document.getElementById('gender').value;
+    const country = document.getElementById('joinCountry').value;
+    const state = document.getElementById('joinState').value;
+    const city = document.getElementById('joinCity').value;
+    const bio = document.getElementById('bio').value.trim();
+
+    if (!nickname || !phone || !email || !country || !state || !city || selectedFiles.length === 0) {
+      alert('please complete all fields and add at least one photo');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-regular fa-spinner fa-spin"></i> processing...';
+
+    try {
+      const photoPromises = selectedFiles.map(file => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      });
+
+      const photos = await Promise.all(photoPromises);
+
+      const newProfile = { nickname, age, gender, country, state, city, bio, phone, email, photos };
+      profiles.push(newProfile);
+      localStorage.setItem('runs-profiles', JSON.stringify(profiles));
+
+      closeJoinModal();
+      displayProfiles();
+
+      document.getElementById('nickname').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('bio').value = '';
+      document.getElementById('photoPreview').innerHTML = '';
+      selectedFiles = [];
+      joinCountry.value = '';
+      joinState.innerHTML = '<option value="">Select country first</option>';
+      joinCity.innerHTML = '<option value="">Select state first</option>';
+      joinState.disabled = true;
+      joinCity.disabled = true;
+    } catch (error) {
+      alert('Failed to read photos. Please try again.');
+      console.error(error);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'create profile';
+    }
+  }
+
+  // ---------- profile modal (eye) with payment redirect ----------
+  let currentProfileIndex = null;
+  let currentGalleryProfile = null;
+  let currentGalleryIndex = 0;
+
+  function openProfileModal(index) {
+    currentProfileIndex = index;
+    const p = profiles[index];
+    currentGalleryProfile = p;
+    currentGalleryIndex = 0;
+    const content = document.getElementById('profileDetailContent');
+    const photoThumbs = p.photos.map((ph, i) => `<img class="photo-thumb" src="${ph}" onclick="openGallery(${i})">`).join('');
+
+    // Check if already paid for this profile
+    const isPaid = paidProfiles[index] || false;
+
+    const phoneHtml = isPaid
+      ? `<p><i class="fa-regular fa-phone"></i> <span class="full-phone">${p.phone}</span></p>`
+      : `<div class="pay-btn" onclick="initiatePayment(${index})"><i class="fa-regular fa-lock"></i> Pay ₦1000 to reveal phone</div>`;
+
+    content.innerHTML = `
+      <div class="profile-detail-header">
+        <img class="detail-avatar" src="${p.photos[0]}">
+        <div><span class="detail-name">${p.nickname}</span></div>
+      </div>
+      <div class="detail-info">
+        ${phoneHtml}
+        <p><i class="fa-regular fa-envelope"></i> ${p.email}</p>
+        <p><i class="fa-regular fa-location-dot"></i> ${p.city}, ${p.state}, ${p.country}</p>
+        <p><i class="fa-regular fa-user"></i> ${p.age} · ${p.gender}</p>
+        <p><i class="fa-regular fa-message"></i> ${p.bio || '✨'}</p>
+        <div class="photo-thumb-row">${photoThumbs}</div>
+      </div>
+    `;
+    document.getElementById('profileModal').classList.add('active');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profileModal').classList.remove('active');
+  }
+
+  // Redirect to payment link with profile index as a query parameter
+  function initiatePayment(profileIndex) {
+    const profile = profiles[profileIndex];
+    if (!profile) return;
+
+    // Save the profile index we are paying for in sessionStorage to match after return
+    sessionStorage.setItem('pendingPaymentProfile', profileIndex);
+
+    // Redirect to payment link with tx_ref parameter (Flutterwave will return it)
+    const redirectUrl = `${PAYMENT_LINK}?tx_ref=RUNS-${Date.now()}-${profileIndex}`;
+    window.location.href = redirectUrl;
+  }
+
+  // ---------- handle return from payment ----------
+  function handlePaymentReturn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const txRef = urlParams.get('tx_ref');
+    const status = urlParams.get('status'); // might be 'successful' or other
+
+    if (txRef && txRef.startsWith('RUNS-')) {
+      // Extract profile index from tx_ref (format: RUNS-timestamp-index)
+      const parts = txRef.split('-');
+      const profileIndex = parseInt(parts[parts.length - 1], 10);
+
+      if (!isNaN(profileIndex) && profiles[profileIndex]) {
+        // If status is successful (or we just assume success because they returned), mark as paid
+        // You could also check for a 'success' parameter
+        if (status === 'successful' || !status) { // if no status, assume success (Flutterwave might redirect without status)
+          paidProfiles[profileIndex] = true;
+          localStorage.setItem('runs-paid', JSON.stringify(paidProfiles));
+          alert('Payment successful! You can now view the phone number.');
+        } else {
+          alert('Payment was not completed. Please try again.');
+        }
+      }
+
+      // Clean up URL (remove query parameters) to avoid reprocessing on refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+
+  // Call on page load
+  window.addEventListener('load', () => {
+    handlePaymentReturn();
+  });
+
+  // ---------- gallery ----------
+  function openGallery(startIndex) {
+    if (!currentGalleryProfile) return;
+    currentGalleryIndex = startIndex;
+    document.getElementById('galleryMainImg').src = currentGalleryProfile.photos[currentGalleryIndex];
+    document.getElementById('galleryModal').classList.add('active');
+  }
+
+  function closeGallery() {
+    document.getElementById('galleryModal').classList.remove('active');
+  }
+
+  function galleryPrev() {
+    if (!currentGalleryProfile) return;
+    currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryProfile.photos.length) % currentGalleryProfile.photos.length;
+    document.getElementById('galleryMainImg').src = currentGalleryProfile.photos[currentGalleryIndex];
+  }
+
+  function galleryNext() {
+    if (!currentGalleryProfile) return;
+    currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryProfile.photos.length;
+    document.getElementById('galleryMainImg').src = currentGalleryProfile.photos[currentGalleryIndex];
+  }
+
+  // ---------- admin panel (hidden, tap logo 5 times) ----------
+  let tapCount = 0;
+  let tapTimer;
+
+  function handleAdminTap() {
+    tapCount++;
+    if (tapCount === 1) {
+      tapTimer = setTimeout(() => { tapCount = 0; }, 1000);
+    }
+    if (tapCount >= 5) {
+      clearTimeout(tapTimer);
+      tapCount = 0;
+      showAdminPanel();
+    }
+  }
+
+  function showAdminPanel() {
+    renderAdminTable();
+    document.getElementById('adminPanel').classList.add('show');
+  }
+
+  function hideAdminPanel() {
+    document.getElementById('adminPanel').classList.remove('show');
+  }
+
+  function renderAdminTable() {
+    const tbody = document.getElementById('adminTableBody');
+    let rows = '';
+    profiles.forEach((p, idx) => {
+      const paid = paidProfiles[idx] ? '<span class="paid-badge">Paid</span>' : 'No';
+      rows += `<tr><td>${p.nickname}</td><td>${p.phone}</td><td>${p.email}</td><td>${paid}</td></tr>`;
+    });
+    tbody.innerHTML = rows;
+  }
+
+  // Close modals on backdrop click
+  window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal-overlay')) {
+      closeJoinModal();
+      closeProfileModal();
+    }
+    if (e.target.classList.contains('gallery-overlay')) {
+      closeGallery();
+    }
+  });
+
+  loadLocations();
+</script>
+</body>
+</html
